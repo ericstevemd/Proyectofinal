@@ -1,30 +1,29 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fron_cliente/model/TranzacionModelo.dart';
-import 'package:fron_cliente/pages/info.dart';
+import 'package:fron_cliente/model/ServicioModel.dart';
 import 'package:fron_cliente/pages/servicios/crearProducto.dart';
-import 'package:fron_cliente/pages/tranzanciones/CrearTranzacion.dart';
 import 'package:http/http.dart' as http;
+import 'package:fron_cliente/pages/tranzanciones/CrearTranzacion.dart';
 
-class Tranzaccion extends StatefulWidget {
-  const Tranzaccion({super.key});
+class ServicioProducto extends StatefulWidget {
+  const ServicioProducto({super.key});
 
   @override
-  State<Tranzaccion> createState() => _TranzaccionState();
+  State<ServicioProducto> createState() => _ServicioProductoState();
 }
 
-List<TranzacionMode> Histori = [];
+List<ProductoMode> Producto = [];
 
-class _TranzaccionState extends State<Tranzaccion> {
+class _ServicioProductoState extends State<ServicioProducto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("lista De Lista de transaciones "),
+        title: Text(" Servicion/Producto"),
       ),
       body: Lista(),
-      floatingActionButton: _boton(context),
+      // floatingActionButton: _CrearProducto(context),
     );
   }
 }
@@ -35,33 +34,34 @@ Lista() {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
-            itemCount: Histori.length,
+            itemCount: Producto.length,
             itemBuilder: (context, index) {
               return Card(
                 child: Container(
                   child: Column(children: [
                     Image(
-                      image: NetworkImage(Histori[index].foto),
-                      width: 600,
+                      image: NetworkImage('${Producto[index].imag}'),
                     ),
+                    /* FadeInImage(
+                       placeholder:
+                          const AssetImage('assets/imag/073 jar-loading.gif'),
+                      image: NetworkImage(Producto[index].imag),
+                      fadeInDuration: const Duration(milliseconds: 200),
+                    ), */
                     Column(
                       children: [
-                        Text(Histori[index].estado),
-                        Text(Histori[index].titularbanco),
-                        Text(Histori[index].numerodecomporbantes),
-                        Text(Histori[index].valora),
+                        Text('${Producto[index].detalle1}'),
+                        Text('${Producto[index].precio}'),
                         TextButton(
                             onPressed: () {
-                              print(Histori[index].foto);
-                              // Histori[index].foto;
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        info(tranzacionMode: Histori[index]),
-                                  ));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => creartranzacion(),
+                                ),
+                              );
                             },
-                            child: const Text("Modificar Estado "))
+                            child: const Text("Validacion de pago"))
                       ],
                     )
                   ]),
@@ -70,7 +70,7 @@ Lista() {
             },
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -110,9 +110,9 @@ Lista() {
       });
 } */
 
-Future<List<TranzacionMode>> getData() async {
+Future<List<ProductoMode>> getData() async {
   final response = await http.get(
-    Uri.parse("http://10.0.2.2:8000/api/historial/"),
+    Uri.parse("http://10.0.2.2:8000/api/producto/"),
   );
 
   if (response.statusCode == 200) {
@@ -121,20 +121,21 @@ Future<List<TranzacionMode>> getData() async {
     print(data["results"]);
 
     for (final index in data["results"]) {
-      Histori.add(TranzacionMode.fromJson(index));
+      Producto.add(ProductoMode.fromJson(index));
     }
-    return Histori;
+    return Producto;
   } else {
-    return Histori;
+    return Producto;
   }
 }
 
-_boton(context) {
+/* _CrearProducto(context) {
   return FloatingActionButton(
     onPressed: () {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const creartranzacion()));
+          MaterialPageRoute(builder: (context) => const nuevoservicio()));
     },
     child: const Icon(Icons.add),
   );
 }
+ */

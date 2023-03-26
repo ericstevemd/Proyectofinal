@@ -7,16 +7,16 @@ import 'package:fron_cliente/pages/servicios/crearProducto.dart';
 import 'package:fron_cliente/pages/tranzanciones/CrearTranzacion.dart';
 import 'package:http/http.dart' as http;
 
-class Tranzaccion extends StatefulWidget {
-  const Tranzaccion({super.key});
+class Tranzaccioncliente extends StatefulWidget {
+  const Tranzaccioncliente({super.key});
 
   @override
-  State<Tranzaccion> createState() => _TranzaccionState();
+  State<Tranzaccioncliente> createState() => _TranzaccionclienteState();
 }
 
 List<TranzacionMode> Histori = [];
 
-class _TranzaccionState extends State<Tranzaccion> {
+class _TranzaccionclienteState extends State<Tranzaccioncliente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,18 +50,6 @@ Lista() {
                         Text(Histori[index].titularbanco),
                         Text(Histori[index].numerodecomporbantes),
                         Text(Histori[index].valora),
-                        TextButton(
-                            onPressed: () {
-                              print(Histori[index].foto);
-                              // Histori[index].foto;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        info(tranzacionMode: Histori[index]),
-                                  ));
-                            },
-                            child: const Text("Modificar Estado "))
                       ],
                     )
                   ]),

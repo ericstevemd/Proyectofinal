@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fron_cliente/model/usuarioMode.dart';
 import 'package:fron_cliente/pages/Historial.dart';
+import 'package:fron_cliente/pages/Historialclientes.dart';
 import 'package:fron_cliente/pages/Servicio.dart';
+import 'package:fron_cliente/pages/Servicio_prducto.dart';
 import 'package:fron_cliente/pages/Tranzaccion.dart';
 import "package:fron_cliente/pages/banco.dart";
+
+import 'package:fron_cliente/pages/bancocuenta.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -21,37 +25,11 @@ class _homeClienteState extends State<homeCliente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: _darwedar(),
-      appBar: AppBar(
-        title: const Text('home'),
-      ),
-      body: FutureBuilder(
-          future: getData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: Histori.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Container(
-                      child: Column(children: [
-                        Text(usuario[index].nombre),
-                        Text(usuario[index].correo),
-                        Text(usuario[index].telefono),
-                        Text(usuario[index].direccion),
-                        Text(usuario[index].correo),
-                      ]),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
-    );
+        drawer: _darwedar(),
+        appBar: AppBar(
+          title: const Text('home'),
+        ),
+        body: Text('cliente'));
   }
 
   _darwedar() {
@@ -86,31 +64,31 @@ class _homeClienteState extends State<homeCliente> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const banco(),
+                  builder: (context) => const bancocuenta(),
                 ),
               );
             },
           ),
           ListTile(
             leading: const Icon(Icons.forward_outlined),
-            title: const Text("Tranzaccion"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Tranzaccion(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.file_upload_sharp),
             title: const Text("Historial"),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Historial(),
+                  builder: (context) => const Tranzaccioncliente(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_basket_outlined),
+            title: const Text("servicios"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ServicioProducto(),
                 ),
               );
             },

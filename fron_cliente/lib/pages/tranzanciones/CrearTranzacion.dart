@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fron_cliente/pages/homeCliente.dart';
 import 'package:image_picker/image_picker.dart';
 
 class creartranzacion extends StatefulWidget {
@@ -42,26 +43,30 @@ class _creartranzacionState extends State<creartranzacion> {
 
   Dio dio = new Dio();
   Future<void> subir_image(
-      String _valora,
-      String _numerodecomporbantes,
-      String _bancoorige,
-      String _titularbanco,
-      String _tipo_cuenta,
-      String _descricion) async {
+      String valora,
+      String numerodecomporbantes,
+      String bancoorige,
+      String titularbanco,
+      String tipoCuenta,
+      String descricion) async {
     try {
       String filename = imagen!.path.split("/").last;
-      FormData forndata = new FormData.fromMap({
-        "valora": _valora,
-        "numerodecomporbantes": _numerodecomporbantes,
-        "bancoorige": _bancoorige,
-        "titularbanco": _titularbanco,
-        "tipo_cuenta": _tipo_cuenta,
-        "descricion": _descricion,
-        'imag': await MultipartFile.fromFile(imagen!.path, filename: filename),
+      FormData forndata = FormData.fromMap({
+        "idusuario": 1.toString(),
+        "idcuenta": 1.toString(),
+        "idproducto": 1.toString(),
+        "idnegocio": 1.toString(),
+        "valora": valora,
+        "numerodecomporbantes": numerodecomporbantes,
+        "bancoorige": bancoorige,
+        "titularbanco": titularbanco,
+        "tipo_cuenta": tipoCuenta,
+        "descricion": descricion,
+        'foto': await MultipartFile.fromFile(imagen!.path, filename: filename),
       });
       print(forndata);
       await dio
-          .post("http://10.0.2.2:8000/api/producto/", data: forndata)
+          .post("http://10.0.2.2:8000/api/historial/", data: forndata)
           .then((value) {
         if (value.toString() == '1') {
           print("la foto se subido correctamente");
@@ -174,7 +179,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'valora',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.money),
               ),
             ),
             TextFormField(
@@ -182,7 +187,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Numero De Comporbantes ',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.numbers),
               ),
             ),
             TextFormField(
@@ -190,7 +195,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Banco del titular',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.account_balance_outlined),
               ),
             ),
             TextFormField(
@@ -198,7 +203,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Nombre del Titular de banco ',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.man_2),
               ),
             ),
             TextFormField(
@@ -206,7 +211,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Tipo de cuenta ',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.account_balance_sharp),
               ),
             ),
             TextFormField(
@@ -214,7 +219,7 @@ class _creartranzacionState extends State<creartranzacion> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Descricion',
-                prefixIcon: Icon(Icons.shopping_cart),
+                prefixIcon: Icon(Icons.description),
               ),
             ),
             Row(
@@ -229,6 +234,13 @@ class _creartranzacionState extends State<creartranzacion> {
                         _titularbanco.text,
                         _tipo_cuenta.text,
                         _descricion.text);
+                    _valora.text = '';
+                    _numerodecomporbantes.text = '';
+                    _bancoorige.text = '';
+                    _titularbanco.text = '';
+                    _tipo_cuenta.text = '';
+                    _descricion.text = '';
+                    _mostrar(context);
                   },
                   child: const Text('Save'),
                 ),
@@ -245,4 +257,31 @@ class _creartranzacionState extends State<creartranzacion> {
       ),
     );
   }
+}
+
+void _mostrar(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tranzancion '),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('tiene que espera que el valide el pago '),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const homeCliente(),
+                      ));
+                },
+                child: Text("Ok "),
+              )
+            ],
+          ),
+        );
+      });
 }

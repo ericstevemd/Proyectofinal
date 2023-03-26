@@ -13,6 +13,7 @@ String tranzacionModeToJson(List<TranzacionMode> data) =>
 
 class TranzacionMode {
   TranzacionMode({
+    required this.id,
     required this.idusuario,
     required this.idcuenta,
     required this.idproducto,
@@ -26,7 +27,7 @@ class TranzacionMode {
     required this.tipoCuenta,
     required this.descricion,
   });
-
+  int id;
   int idusuario;
   int idcuenta;
   int idproducto;
@@ -41,6 +42,7 @@ class TranzacionMode {
   String descricion;
 
   factory TranzacionMode.fromJson(Map<String, dynamic> json) => TranzacionMode(
+        id: json["id"],
         idusuario: json["idusuario"],
         idcuenta: json["idcuenta"],
         idproducto: json["idproducto"],
@@ -56,6 +58,7 @@ class TranzacionMode {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "idusuario": idusuario,
         "idcuenta": idcuenta,
         "idproducto": idproducto,
